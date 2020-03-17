@@ -12,7 +12,7 @@ nconf.argv({
 })
   .env()
   .defaults({
-    RABBIT_URI: 'amqp://guest:guest@localhost:5672/test#test'
+    RABBIT_URI: 'amqp://guest:guest@localhost:5672'
   })
 
 // Start

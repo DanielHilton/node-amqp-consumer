@@ -9,10 +9,12 @@ services:
       - perftest
   perf:
     image: 'pivotalrabbitmq/perf-test:latest'
+    environment:
+      RATE_LIMIT: "${RATE_LIMIT}"
     depends_on:
       - rabbitmq
     networks:
       - perftest
-    command: "--uri amqp://rabbitmq/test#test -k test.node-stuff --exchange test -t fanout -jb -r 1500"
+    command: "--uri amqp://rabbitmq -k test.node-stuff --exchange test -t fanout -jb -r ${RATE_LIMIT} -z 300 -y 0"
 networks:
   perftest:
