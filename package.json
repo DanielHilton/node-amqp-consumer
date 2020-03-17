@@ -1,0 +1,31 @@
+{
+  "name": "amqp-consumer",
+  "version": "1.0.0",
+  "description": "An AMQP consumer",
+  "main": "app/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DanielHilton/node-amqp-consumer.git"
+  },
+  "keywords": [
+    "consumer",
+    "amqp"
+  ],
+  "author": "Daniel Hilton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DanielHilton/node-amqp-consumer/issues"
+  },
+  "homepage": "https://github.com/DanielHilton/node-amqp-consumer#readme",
+  "devDependencies": {
+    "standard": "^14.3.3"
+  },
+  "dependencies": {
+    "amqp-connection-manager": "^3.2.0",
+    "amqplib": "^0.5.5",
+    "nconf": "^0.10.0"
+  }
+}

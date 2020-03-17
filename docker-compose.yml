@@ -1,0 +1,18 @@
+version: "3.7"
+services:
+  rabbitmq:
+    image: rabbitmq:3.8.2-management-alpine
+    ports:
+      - 15672:15672
+      - 5672:5672
+    networks:
+      - perftest
+  perf:
+    image: 'pivotalrabbitmq/perf-test:latest'
+    depends_on:
+      - rabbitmq
+    networks:
+      - perftest
+    command: "--uri amqp://rabbitmq/test#test -k test.node-stuff --exchange test -t fanout -jb -r 1500"
+networks:
+  perftest:
