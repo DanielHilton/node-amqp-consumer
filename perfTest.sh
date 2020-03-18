@@ -7,8 +7,8 @@ fi
 
 shutDown() {
   echo "Shutting down"
-  kill -9 "${SERVICE_PID}"
   docker-compose down
+  kill -9 "${SERVICE_PID}"
 }
 
 trap shutDown SIGINT
@@ -28,3 +28,6 @@ export SERVICE_PID=$!
 
 echo "Starting perftest with rate limit of ${RATE_LIMIT}"
 docker-compose up perf
+
+docker-compose down
+kill -9 ${SERVICE_PID}
