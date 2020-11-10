@@ -7,13 +7,12 @@ const CreateConsumer = async function (connection, { exchange, queue, dlx, routi
       const message = JSON.parse(rawMessage.content)
       if (message) {
         await messageHandler(message)
-        channelWrapper.ack(rawMessage)
-        return
+        return channelWrapper.ack(rawMessage)
       }
 
       channelWrapper.nack(rawMessage, false, false)
     } catch (error) {
-      console.error(chalk.redBright('Failed to process message'))
+      console.error(chalk.redBright(`Failed to process message ${error}`))
       channelWrapper.nack(rawMessage, false, false)
     }
   }

@@ -1,7 +1,7 @@
 // Imports
 const nconf = require('nconf')
 const amqpConnection = require('./amqp/connection')
-const consumer = require('./services/do-some-stuff')
+const consumer = require('./consumers/enrich-message')
 const express = require('express')
 const httpServer = require('http')
 const { MongoClient } = require('mongodb')
@@ -17,11 +17,13 @@ nconf.argv({
   .env()
   .defaults({
     RABBIT_URI: 'amqp://guest:fishcake@localhost:5672',
-    MONGO_URL: 'mongodb://localhost:27017/nodepoc'
+    MONGO_URL: 'mongodb://localhost:27017/poc'
   })
 
 const app = express()
 const server = httpServer.createServer(app)
+
+app.use('/sample', require('./routes/sample'))
 
 app.on('rabbit-ready', () => {
   server.listen(9000)
@@ -40,15 +42,15 @@ app.on('mongo-ready', () => {
 })
 
 Promise.resolve(MongoClient.connect(nconf.get('MONGO_URL'), { useNewUrlParser: true })
-  .then((db, error) => {
+  .then((client, error) => {
     if (error) {
       console.log('You failed')
       return process.exit(2)
     }
 
-    return db
-  })).then(db => {
-  global.mongo = db
+    return client
+  })).then(client => {
+  global.mongo = client
   console.log(chalk.green('Connected to MongoDB'))
   app.emit('mongo-ready')
 })
