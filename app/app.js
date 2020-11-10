@@ -1,11 +1,12 @@
 // Imports
 const nconf = require('nconf')
 const amqpConnection = require('./amqp/connection')
-const consumer = require('./consumers/enrich-message')
 const express = require('express')
 const httpServer = require('http')
 const { MongoClient } = require('mongodb')
 const chalk = require('chalk')
+
+const initialiseConsumers = require('./consumers/initialise')
 
 nconf.argv({
   RABBIT_URI: {
@@ -16,7 +17,7 @@ nconf.argv({
 })
   .env()
   .defaults({
-    RABBIT_URI: 'amqp://guest:fishcake@localhost:5672',
+    RABBIT_URI: 'amqp://guest:guest@localhost:5672',
     MONGO_URL: 'mongodb://localhost:27017/poc'
   })
 
@@ -32,7 +33,7 @@ app.on('rabbit-ready', () => {
 
 app.on('mongo-ready', () => {
   amqpConnection.connect(nconf.get('RABBIT_URI')).then(async connection => {
-    await consumer.create(connection)
+    await initialiseConsumers(connection)
     app.emit('rabbit-ready')
     return connection
   }).catch(err => {

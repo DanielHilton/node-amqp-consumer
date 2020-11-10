@@ -2,7 +2,7 @@ async function publishMessage (message, connection, exchange, routingKey) {
   const channelWrapper = await connection.createChannel({
     setup: channel =>
       Promise.all([
-        channel.assertExchange(exchange, 'topic')
+        channel.assertExchange(exchange, 'topic', { durable: false })
       ])
   })
 
@@ -13,7 +13,7 @@ async function publishMessage (message, connection, exchange, routingKey) {
     new Buffer.from(JSON.stringify(message)),
     {
       contentType: 'application/json',
-      persistent: true
+      persistent: false
     })
 
   channelWrapper.close()

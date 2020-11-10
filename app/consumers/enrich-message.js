@@ -4,7 +4,7 @@ const qs = require('qs')
 const { publishMessage } = require('../amqp/publisher')
 
 async function create (connection) {
-  await CreateConsumer(
+  return CreateConsumer(
     connection,
     {
       exchange: 'test',
