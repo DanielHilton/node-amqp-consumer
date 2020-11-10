@@ -11,7 +11,7 @@ async function create (connection) {
     async message => {
       const now = Date.now()
 
-      console.log({now, message})
+      console.log({ now, message })
     })
 }
 

@@ -1,8 +1,10 @@
+const chalk = require('chalk')
+
 const CreateConsumer = async function (connection, { exchange, queue, dlx, routingKey }, messageHandler) {
   // Handle an incoming message.
   const consumerWrapper = async rawMessage => {
     try {
-      let message = JSON.parse(rawMessage.content)
+      const message = JSON.parse(rawMessage.content)
       if (message) {
         await messageHandler(message)
         channelWrapper.ack(rawMessage)
@@ -11,15 +13,15 @@ const CreateConsumer = async function (connection, { exchange, queue, dlx, routi
 
       channelWrapper.nack(rawMessage, false, false)
     } catch (error) {
-      console.error('Failed to process message')
+      console.error(chalk.redBright('Failed to process message'))
       channelWrapper.nack(rawMessage, false, false)
     }
   }
 
-  let channelWrapper = await connection.createChannel({
+  const channelWrapper = await connection.createChannel({
     setup: channel =>
       Promise.all([
-        channel.assertExchange(exchange, 'fanout', {durable: false}),
+        channel.assertExchange(exchange, 'fanout', { durable: false }),
         channel.assertQueue(queue, {
           durable: false,
           arguments: (dlx) ? { 'x-dead-letter-exchange': dlx } : {}
@@ -32,7 +34,7 @@ const CreateConsumer = async function (connection, { exchange, queue, dlx, routi
   })
 
   await channelWrapper.waitForConnect()
-  console.log(`Listening for messages on exchange ${exchange} with routingkey ${routingKey}`)
+  console.log(chalk.magentaBright(`Listening for messages on exchange ${exchange} with routing key ${routingKey}`))
 }
 
 module.exports = { CreateConsumer }
