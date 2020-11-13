@@ -1,0 +1,8 @@
+output.log
+.gitignore
+perfTest.sh
+docker-compose.yml
+.dockerignore
+Dockerfile
+
+node_modules

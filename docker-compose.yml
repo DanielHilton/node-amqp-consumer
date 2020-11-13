@@ -18,3 +18,4 @@ services:
     command: "--uri amqp://rabbitmq -k test.enrichwithbibleverse --exchange test -t topic -jb -r ${RATE_LIMIT} -z 300 -y 0"
 networks:
   perftest:
+    driver: bridge

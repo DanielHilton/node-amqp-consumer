@@ -27,7 +27,7 @@ const server = httpServer.createServer(app)
 app.use('/sample', require('./routes/sample'))
 
 app.on('rabbit-ready', () => {
-  server.listen(9000)
+  server.listen(9001)
   console.log(chalk.cyan('The Node.js POC has started.'))
 })
 
